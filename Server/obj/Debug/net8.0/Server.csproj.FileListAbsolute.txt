@@ -1,0 +1,14 @@
+C:\Users\ngtba\source\repos\ChatApp\Server\bin\Debug\net8.0\Server.exe
+C:\Users\ngtba\source\repos\ChatApp\Server\bin\Debug\net8.0\Server.deps.json
+C:\Users\ngtba\source\repos\ChatApp\Server\bin\Debug\net8.0\Server.runtimeconfig.json
+C:\Users\ngtba\source\repos\ChatApp\Server\bin\Debug\net8.0\Server.dll
+C:\Users\ngtba\source\repos\ChatApp\Server\bin\Debug\net8.0\Server.pdb
+C:\Users\ngtba\source\repos\ChatApp\Server\obj\Debug\net8.0\Server.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ngtba\source\repos\ChatApp\Server\obj\Debug\net8.0\Server.AssemblyInfoInputs.cache
+C:\Users\ngtba\source\repos\ChatApp\Server\obj\Debug\net8.0\Server.AssemblyInfo.cs
+C:\Users\ngtba\source\repos\ChatApp\Server\obj\Debug\net8.0\Server.csproj.CoreCompileInputs.cache
+C:\Users\ngtba\source\repos\ChatApp\Server\obj\Debug\net8.0\Server.dll
+C:\Users\ngtba\source\repos\ChatApp\Server\obj\Debug\net8.0\refint\Server.dll
+C:\Users\ngtba\source\repos\ChatApp\Server\obj\Debug\net8.0\Server.pdb
+C:\Users\ngtba\source\repos\ChatApp\Server\obj\Debug\net8.0\Server.genruntimeconfig.cache
+C:\Users\ngtba\source\repos\ChatApp\Server\obj\Debug\net8.0\ref\Server.dll
