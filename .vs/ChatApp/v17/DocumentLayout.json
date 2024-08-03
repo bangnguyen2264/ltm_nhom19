@@ -7,36 +7,24 @@
       "RelativeMoniker": "D:0:0:{C49F01D7-C33A-49BE-A697-22E4352ACE61}|Solution Items{C49F01D7-C33A-49BE-A697-22E4352ACE61}|solutionrelative:.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{99014338-A0A6-4192-A2CE-569463DF0AB9}|ChatApp\\ChatApp.csproj|C:\\Users\\ngtba\\source\\repos\\ChatApp\\chatapp\\privatechat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{99014338-A0A6-4192-A2CE-569463DF0AB9}|ChatApp\\ChatApp.csproj|solutionrelative:chatapp\\privatechat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{99014338-A0A6-4192-A2CE-569463DF0AB9}|ChatApp\\ChatApp.csproj|c:\\users\\ngtba\\source\\repos\\chatapp\\chatapp\\privatechat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{99014338-A0A6-4192-A2CE-569463DF0AB9}|ChatApp\\ChatApp.csproj|solutionrelative:chatapp\\privatechat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{99014338-A0A6-4192-A2CE-569463DF0AB9}|ChatApp\\ChatApp.csproj|C:\\Users\\ngtba\\source\\repos\\ChatApp\\chatapp\\privatechat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{99014338-A0A6-4192-A2CE-569463DF0AB9}|ChatApp\\ChatApp.csproj|solutionrelative:chatapp\\privatechat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
       "AbsoluteMoniker": "D:0:0:{99014338-A0A6-4192-A2CE-569463DF0AB9}|ChatApp\\ChatApp.csproj|C:\\Users\\ngtba\\source\\repos\\ChatApp\\chatapp\\privatechat.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{99014338-A0A6-4192-A2CE-569463DF0AB9}|ChatApp\\ChatApp.csproj|solutionrelative:chatapp\\privatechat.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{99014338-A0A6-4192-A2CE-569463DF0AB9}|ChatApp\\ChatApp.csproj|C:\\Users\\ngtba\\source\\repos\\ChatApp\\chatapp\\selectchatroom.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{99014338-A0A6-4192-A2CE-569463DF0AB9}|ChatApp\\ChatApp.csproj|solutionrelative:chatapp\\selectchatroom.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{99014338-A0A6-4192-A2CE-569463DF0AB9}|ChatApp\\ChatApp.csproj|C:\\Users\\ngtba\\source\\repos\\ChatApp\\chatapp\\groupchat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{99014338-A0A6-4192-A2CE-569463DF0AB9}|ChatApp\\ChatApp.csproj|solutionrelative:chatapp\\groupchat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{99014338-A0A6-4192-A2CE-569463DF0AB9}|ChatApp\\ChatApp.csproj|C:\\Users\\ngtba\\source\\repos\\ChatApp\\chatapp\\selectchatroom.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{99014338-A0A6-4192-A2CE-569463DF0AB9}|ChatApp\\ChatApp.csproj|solutionrelative:chatapp\\selectchatroom.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{04A5BDDD-3BDE-466A-9D17-065B509A3200}|Server\\Server.csproj|c:\\users\\ngtba\\source\\repos\\chatapp\\server\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{04A5BDDD-3BDE-466A-9D17-065B509A3200}|Server\\Server.csproj|solutionrelative:server\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{99014338-A0A6-4192-A2CE-569463DF0AB9}|ChatApp\\ChatApp.csproj|C:\\Users\\ngtba\\source\\repos\\ChatApp\\chatapp\\groupchat.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{99014338-A0A6-4192-A2CE-569463DF0AB9}|ChatApp\\ChatApp.csproj|solutionrelative:chatapp\\groupchat.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{99014338-A0A6-4192-A2CE-569463DF0AB9}|ChatApp\\ChatApp.csproj|C:\\Users\\ngtba\\source\\repos\\ChatApp\\chatapp\\selectchatroom.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{99014338-A0A6-4192-A2CE-569463DF0AB9}|ChatApp\\ChatApp.csproj|solutionrelative:chatapp\\selectchatroom.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -54,47 +42,12 @@
               "Title": ".gitignore",
               "DocumentMoniker": "C:\\Users\\ngtba\\source\\repos\\ChatApp\\.gitignore",
               "RelativeDocumentMoniker": ".gitignore",
-              "ToolTip": "C:\\Users\\ngtba\\source\\repos\\ChatApp\\.gitignore",
-              "RelativeToolTip": ".gitignore",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAAAAAAA",
+              "ToolTip": "C:\\Users\\ngtba\\source\\repos\\ChatApp\\.gitignore*",
+              "RelativeToolTip": ".gitignore*",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAADQAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2024-08-01T03:41:32.837Z",
+              "WhenOpened": "2024-08-03T14:05:41.312Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\ngtba\\source\\repos\\ChatApp\\Server\\Program.cs",
-              "RelativeDocumentMoniker": "Server\\Program.cs",
-              "ToolTip": "C:\\Users\\ngtba\\source\\repos\\ChatApp\\Server\\Program.cs",
-              "RelativeToolTip": "Server\\Program.cs",
-              "ViewState": "AQIAAEkAAAAAAAAAAAAQwAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-31T01:35:12.242Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "GroupChat.cs",
-              "DocumentMoniker": "C:\\Users\\ngtba\\source\\repos\\ChatApp\\ChatApp\\GroupChat.cs",
-              "RelativeDocumentMoniker": "ChatApp\\GroupChat.cs",
-              "ToolTip": "C:\\Users\\ngtba\\source\\repos\\ChatApp\\ChatApp\\GroupChat.cs",
-              "RelativeToolTip": "ChatApp\\GroupChat.cs",
-              "ViewState": "AQIAAAMAAAAAAAAAAAAuwCoAAAANAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-31T01:29:58.819Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "SelectChatRoom.cs [Design]",
-              "DocumentMoniker": "C:\\Users\\ngtba\\source\\repos\\ChatApp\\ChatApp\\SelectChatRoom.cs",
-              "RelativeDocumentMoniker": "ChatApp\\SelectChatRoom.cs",
-              "ToolTip": "C:\\Users\\ngtba\\source\\repos\\ChatApp\\ChatApp\\SelectChatRoom.cs [Design]",
-              "RelativeToolTip": "ChatApp\\SelectChatRoom.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-31T01:27:24.714Z"
             },
             {
               "$type": "Document",
@@ -104,59 +57,56 @@
               "RelativeDocumentMoniker": "ChatApp\\PrivateChat.Designer.cs",
               "ToolTip": "C:\\Users\\ngtba\\source\\repos\\ChatApp\\ChatApp\\PrivateChat.Designer.cs",
               "RelativeToolTip": "ChatApp\\PrivateChat.Designer.cs",
-              "ViewState": "AQIAAEQAAAAAAAAAAAAwwIoAAAAhAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABYAAAAIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-31T01:26:33.665Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-01T08:29:13.955Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "SelectChatRoom.cs",
-              "DocumentMoniker": "C:\\Users\\ngtba\\source\\repos\\ChatApp\\ChatApp\\SelectChatRoom.cs",
-              "RelativeDocumentMoniker": "ChatApp\\SelectChatRoom.cs",
-              "ToolTip": "C:\\Users\\ngtba\\source\\repos\\ChatApp\\ChatApp\\SelectChatRoom.cs",
-              "RelativeToolTip": "ChatApp\\SelectChatRoom.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABEAAAAJAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-31T00:57:24.478Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "PrivateChat.cs",
               "DocumentMoniker": "C:\\Users\\ngtba\\source\\repos\\ChatApp\\ChatApp\\PrivateChat.cs",
               "RelativeDocumentMoniker": "ChatApp\\PrivateChat.cs",
               "ToolTip": "C:\\Users\\ngtba\\source\\repos\\ChatApp\\ChatApp\\PrivateChat.cs",
               "RelativeToolTip": "ChatApp\\PrivateChat.cs",
-              "ViewState": "AQIAAJ0AAAAAAAAAAIA7wKoAAAAAAAAA",
+              "ViewState": "AQIAAG4AAAAAAAAAAAAswH0AAAAlAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-30T23:50:36.447Z",
+              "WhenOpened": "2024-08-01T08:27:35.685Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "PrivateChat.cs [Design]",
               "DocumentMoniker": "C:\\Users\\ngtba\\source\\repos\\ChatApp\\ChatApp\\PrivateChat.cs",
               "RelativeDocumentMoniker": "ChatApp\\PrivateChat.cs",
               "ToolTip": "C:\\Users\\ngtba\\source\\repos\\ChatApp\\ChatApp\\PrivateChat.cs [Design]",
               "RelativeToolTip": "ChatApp\\PrivateChat.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-30T00:30:10.203Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2024-08-01T08:23:36.586Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "GroupChat.Designer.cs",
-              "DocumentMoniker": "C:\\Users\\ngtba\\source\\repos\\ChatApp\\ChatApp\\GroupChat.Designer.cs",
-              "RelativeDocumentMoniker": "ChatApp\\GroupChat.Designer.cs",
-              "ToolTip": "C:\\Users\\ngtba\\source\\repos\\ChatApp\\ChatApp\\GroupChat.Designer.cs",
-              "RelativeToolTip": "ChatApp\\GroupChat.Designer.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABYAAAAIAAAA",
+              "DocumentIndex": 5,
+              "Title": "SelectChatRoom.cs",
+              "DocumentMoniker": "C:\\Users\\ngtba\\source\\repos\\ChatApp\\ChatApp\\SelectChatRoom.cs",
+              "RelativeDocumentMoniker": "ChatApp\\SelectChatRoom.cs",
+              "ToolTip": "C:\\Users\\ngtba\\source\\repos\\ChatApp\\ChatApp\\SelectChatRoom.cs",
+              "RelativeToolTip": "ChatApp\\SelectChatRoom.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAAiAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-30T01:35:37.017Z"
+              "WhenOpened": "2024-07-31T00:57:24.478Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "SelectChatRoom.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\ngtba\\source\\repos\\ChatApp\\ChatApp\\SelectChatRoom.cs",
+              "RelativeDocumentMoniker": "ChatApp\\SelectChatRoom.cs",
+              "ToolTip": "C:\\Users\\ngtba\\source\\repos\\ChatApp\\ChatApp\\SelectChatRoom.cs [Design]",
+              "RelativeToolTip": "ChatApp\\SelectChatRoom.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-31T01:27:24.714Z"
             }
           ]
         }

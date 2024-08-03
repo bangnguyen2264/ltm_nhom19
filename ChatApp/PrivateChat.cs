@@ -3,8 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ChatApp
@@ -12,163 +11,149 @@ namespace ChatApp
     public partial class PrivateChat : Form
     {
         private TcpClient client;
-        private TcpListener listener;
-        private NetworkStream stream;
-        private Thread listenerThread;
-
+        public StreamReader STR;
+        public StreamWriter STW;
+        public string receive;
+        public string TextToSend;
+        public bool isConnected = false;
 
         public PrivateChat()
         {
             InitializeComponent();
-            ConnectToServer();
+            yPort.Text = User.PrivatePort.ToString();
         }
 
-        void ConnectToServer()
+        private void btnSend_Click(object sender, EventArgs e)
         {
-            ip = new IPEndPoint(IPAddress.Any, 5000);
-            server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-
-            // Enable address reuse
-            server.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-
-            try
+            if (txtMessage.Text != "")
             {
-                server.Bind(ip);
+                TextToSend =User.UserName+ ": " + txtMessage.Text;
+                backgroundWorker2.RunWorkerAsync();
             }
-            catch (SocketException ex)
-            {
-                Trace.WriteLine($"Error binding socket: {ex.Message}");
-                MessageBox.Show($"Error binding socket: {ex.Message}", "Socket Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+            txtMessage.Text = "";
+        }
 
-            Thread listen = new Thread(() =>
+
+        private void backgroundWorker1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            while (client.Connected)
             {
                 try
                 {
-                    while (true)
+                    receive = STR.ReadLine();
+                    this.listTextMessages.Invoke(new MethodInvoker(delegate ()
                     {
-                        server.Listen(100);
-                        Socket client = server.Accept();
-                        Thread receive = new Thread(Receive);
-                        receive.IsBackground = true;
-                        receive.Start(client);
-                    }
+                        listTextMessages.AppendText(receive + "\n");
+                    }));
+                    receive = "";
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Server error: {ex.Message}", "Server Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    ResetServer();
-                }
-            })
-            {
-                IsBackground = true
-            };
-            listen.Start();
-        }
-
-        void ResetServer()
-        {
-            ip = new IPEndPoint(IPAddress.Any, 5000);
-            server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            server.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-        }
-
-        void ConnectToClient()
-        {
-            ip = new IPEndPoint(IPAddress.Parse("127.0.0.1"), int.Parse(ipConnect.Text));
-            client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            try
-            {
-                client.Connect(ip);
-                Thread receive = new Thread(Receive)
-                {
-                    IsBackground = true
-                };
-                receive.Start(client);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Unable to connect to client: {ex.Message}", "Connection Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        void Close()
-        {
-            server?.Close();
-            client?.Close();
-        }
-
-        void Send()
-        {
-            if (!string.IsNullOrEmpty(txtMessage.Text))
-            {
-                client.Send(Serialize(txtMessage.Text));
-            }
-        }
-
-        void Receive(object obj)
-        {
-            Socket client = obj as Socket;
-            try
-            {
-                while (true)
-                {
-                    byte[] data = new byte[1024 * 5000];
-                    client.Receive(data);
-                    string message = (string)Deserialize(data);
-                    AddMessage(message);
+                    MessageBox.Show(ex.Message.ToString());
                 }
             }
-            catch
+        }
+
+        private void backgroundWorker2_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            if (client.Connected)
             {
-                client?.Close();
+                STW.WriteLine(TextToSend);
+                this.listTextMessages.Invoke(new MethodInvoker(delegate ()
+                {
+                    listTextMessages.AppendText( TextToSend + "\n");
+                }));
             }
-        }
-
-        void AddMessage(string message)
-        {
-            listTextMessages.Invoke(new Action(() => listTextMessages.Text += message + Environment.NewLine));
-        }
-
-        byte[] Serialize(object obj)
-        {
-            using (MemoryStream stream = new MemoryStream())
+            else
             {
-                BinaryFormatter formatter = new BinaryFormatter();
-                formatter.Serialize(stream, obj);
-                return stream.ToArray();
+                MessageBox.Show("Send failed!");
             }
+            backgroundWorker2.CancelAsync();
         }
-
-        object Deserialize(byte[] data)
+        void StartServer()
         {
-            using (MemoryStream stream = new MemoryStream(data))
+            TcpListener listener = new TcpListener(IPAddress.Any, int.Parse(yPort.Text));
+            listener.Start();
+            Task.Run(() =>
             {
-                BinaryFormatter formatter = new BinaryFormatter();
-                return formatter.Deserialize(stream);
-            }
-        }
+                try
+                {
+                    client = listener.AcceptTcpClient();
+                    STR = new StreamReader(client.GetStream());
+                    STW = new StreamWriter(client.GetStream());
+                    STW.AutoFlush = true;
+                    backgroundWorker1.RunWorkerAsync();
+                    backgroundWorker2.WorkerSupportsCancellation = true;
+                    this.Invoke(new MethodInvoker(delegate ()
+                    {
+                        listTextMessages.AppendText("Client connected\n");
+                    }));
+                }
 
-        private void PrivateChat_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            Close();
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message.ToString());
+                }
+            });
+            Trace.WriteLine("Server started with port " + User.PrivatePort);
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
         {
-            ConnectToClient();
+            if (isConnected == false)
+            {
+                ConnectClient();
+            }
+            else
+            {
+                btnConnect.Text = "Disconnect";
+                Disconnect();
+            }
         }
 
-
-        private void btnSend_Click(object sender, EventArgs e)
+        void ConnectClient()
         {
-            Send();
+            client = new TcpClient();
+            IPEndPoint IP_End = new IPEndPoint(IPAddress.Parse("127.0.0.1"), int.Parse(clPort.Text));
+
+            try
+            {
+                client.Connect(IP_End);
+                TextToSend = User.UserName + " joined the chat";
+                backgroundWorker2.RunWorkerAsync();
+                STW = new StreamWriter(client.GetStream());
+                STR = new StreamReader(client.GetStream());
+                STW.AutoFlush = true;
+                backgroundWorker1.RunWorkerAsync();
+                backgroundWorker2.WorkerSupportsCancellation = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message.ToString());
+            }
+            listTextMessages.AppendText("Connected to server\n");
+
+        }
+        void Disconnect()
+        {   
+            TextToSend = User.UserName + " left the chat";
+            backgroundWorker2.RunWorkerAsync();
+            client.Close();
+            STR.Close();
+            STW.Close();
+            listTextMessages.Clear();
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        private void PrivateChat_FormClosed(object sender, FormClosedEventArgs e)
         {
+            Disconnect();
+            SelectChatRoom selectChatRoom = new SelectChatRoom();
+            selectChatRoom.Show();
+        }
 
+        private void btnStart_Click(object sender, EventArgs e)
+        {
+            StartServer();
         }
     }
 }
