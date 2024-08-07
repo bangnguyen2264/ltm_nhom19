@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ngtba\\source\\repos\\ChatApp\\Server\\Server.csproj": {}
+    "C:\\Users\\MSII\\OneDrive\\Desktop\\LapTrinhMang\\ChatApp\\Server\\Server.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ngtba\\source\\repos\\ChatApp\\Server\\Server.csproj": {
+    "C:\\Users\\MSII\\OneDrive\\Desktop\\LapTrinhMang\\ChatApp\\Server\\Server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ngtba\\source\\repos\\ChatApp\\Server\\Server.csproj",
+        "projectUniqueName": "C:\\Users\\MSII\\OneDrive\\Desktop\\LapTrinhMang\\ChatApp\\Server\\Server.csproj",
         "projectName": "Server",
-        "projectPath": "C:\\Users\\ngtba\\source\\repos\\ChatApp\\Server\\Server.csproj",
-        "packagesPath": "C:\\Users\\ngtba\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ngtba\\source\\repos\\ChatApp\\Server\\obj\\",
+        "projectPath": "C:\\Users\\MSII\\OneDrive\\Desktop\\LapTrinhMang\\ChatApp\\Server\\Server.csproj",
+        "packagesPath": "C:\\Users\\MSII\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\MSII\\OneDrive\\Desktop\\LapTrinhMang\\ChatApp\\Server\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\ngtba\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\MSII\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
