@@ -71,7 +71,33 @@ namespace ChatApp
             }
             backgroundWorker2.CancelAsync();
         }
+        void StartServer()
+        {
+            TcpListener listener = new TcpListener(IPAddress.Any, 80);
+            listener.Start();
+            Task.Run(() =>
+            {
+                try
+                {
+                    client = listener.AcceptTcpClient();
+                    STR = new StreamReader(client.GetStream());
+                    STW = new StreamWriter(client.GetStream());
+                    STW.AutoFlush = true;
+                    backgroundWorker1.RunWorkerAsync();
+                    backgroundWorker2.WorkerSupportsCancellation = true;
+                    this.Invoke(new MethodInvoker(delegate ()
+                    {
+                        listTextMessages.AppendText("Client connected\n");
+                    }));
+                }
 
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message.ToString());
+                }
+            });
+            Trace.WriteLine("Server started with port " + User.PrivatePort);
+        }
 
         private void btnConnect_Click(object sender, EventArgs e)
         {
