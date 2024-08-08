@@ -135,6 +135,15 @@ namespace ChatApp
             listTextMessages.AppendText("Connected to server\n");
 
         }
+        void Disconnect()
+        {
+            TextToSend = User.UserName + " left the chat";
+            backgroundWorker2.RunWorkerAsync();
+            client.Close();
+            STR.Close();
+            STW.Close();
+            listTextMessages.Clear();
+        }
 
         private void PrivateChat_FormClosed(object sender, FormClosedEventArgs e)
         {
