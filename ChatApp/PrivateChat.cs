@@ -112,7 +112,30 @@ namespace ChatApp
             }
         }
 
-        
+        void ConnectClient()
+        {
+            client = new TcpClient();
+            IPEndPoint IP_End = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 80);
+
+            try
+            {
+                client.Connect(IP_End);
+                TextToSend = User.UserName + " joined the chat";
+                backgroundWorker2.RunWorkerAsync();
+                STW = new StreamWriter(client.GetStream());
+                STR = new StreamReader(client.GetStream());
+                STW.AutoFlush = true;
+                backgroundWorker1.RunWorkerAsync();
+                backgroundWorker2.WorkerSupportsCancellation = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message.ToString());
+            }
+            listTextMessages.AppendText("Connected to server\n");
+
+        }
+
         private void PrivateChat_FormClosed(object sender, FormClosedEventArgs e)
         {
             Disconnect();
