@@ -57,23 +57,46 @@ namespace ChatApp
 
         private void backgroundWorker2_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
-            
+            if (client.Connected)
+            {
+                STW.WriteLine(TextToSend);
+                this.listTextMessages.Invoke(new MethodInvoker(delegate ()
+                {
+                    listTextMessages.AppendText(TextToSend + "\n");
+                }));
+            }
+            else
+            {
+                MessageBox.Show("Send failed!");
+            }
+            backgroundWorker2.CancelAsync();
         }
 
 
         private void btnConnect_Click(object sender, EventArgs e)
         {
-           
+            if (isConnected == false)
+            {
+                ConnectClient();
+            }
+            else
+            {
+                btnConnect.Text = "Disconnect";
+                Disconnect();
+            }
         }
 
         
         private void PrivateChat_FormClosed(object sender, FormClosedEventArgs e)
         {
-
+            Disconnect();
+            SelectChatRoom selectChatRoom = new SelectChatRoom();
+            selectChatRoom.Show();
         }
 
         private void btnStart_Click(object sender, EventArgs e)
         {
+            StartServer();
         }
     }
 }
