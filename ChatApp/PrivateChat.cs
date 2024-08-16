@@ -5,7 +5,6 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-//Thái push code backgroundWorker1_DoWork và backgroundWorker2_DoWork
 
 namespace ChatApp
 {
@@ -73,7 +72,7 @@ namespace ChatApp
         }
         void StartServer()
         {
-            TcpListener listener = new TcpListener(IPAddress.Any, 80);
+            TcpListener listener = new TcpListener(IPAddress.Any, int.Parse(yPort.Text));
             listener.Start();
             Task.Run(() =>
             {
@@ -115,7 +114,7 @@ namespace ChatApp
         void ConnectClient()
         {
             client = new TcpClient();
-            IPEndPoint IP_End = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 80);
+            IPEndPoint IP_End = new IPEndPoint(IPAddress.Parse("127.0.0.1"), int.Parse(clPort.Text));
 
             try
             {
