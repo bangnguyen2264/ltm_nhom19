@@ -8,7 +8,6 @@ using System.Threading;
 using System.Windows.Forms;
 using System;
 
-
 namespace ChatApp
 {
     public partial class GroupChat : Form
@@ -168,4 +167,3 @@ namespace ChatApp
         }
     }
 }
-

@@ -28,6 +28,7 @@ namespace ChatApp
             if (txtMessage.Text != "")
             {
                 TextToSend = User.UserName + ": " + txtMessage.Text;
+
                 backgroundWorker2.RunWorkerAsync();
             }
             txtMessage.Text = "";
@@ -62,6 +63,7 @@ namespace ChatApp
                 this.listTextMessages.Invoke(new MethodInvoker(delegate ()
                 {
                     listTextMessages.AppendText(TextToSend + "\n");
+
                 }));
             }
             else
