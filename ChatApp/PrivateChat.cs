@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -11,11 +12,12 @@ namespace ChatApp
     public partial class PrivateChat : Form
     {
         private TcpClient client;
-        public StreamReader STR;
-        public StreamWriter STW;
-        public string receive;
-        public string TextToSend;
-        public bool isConnected = false;
+        private TcpListener listener;
+        private StreamReader STR;
+        private StreamWriter STW;
+        private string receive;
+        private string TextToSend;
+        private CancellationTokenSource cancellationTokenSource;
 
         public PrivateChat()
         {
@@ -28,12 +30,10 @@ namespace ChatApp
             if (txtMessage.Text != "")
             {
                 TextToSend = User.UserName + ": " + txtMessage.Text;
-
                 backgroundWorker2.RunWorkerAsync();
             }
             txtMessage.Text = "";
         }
-
 
         private void backgroundWorker1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
@@ -42,7 +42,7 @@ namespace ChatApp
                 try
                 {
                     receive = STR.ReadLine();
-                    this.listTextMessages.Invoke(new MethodInvoker(delegate ()
+                    this.Invoke(new MethodInvoker(delegate ()
                     {
                         listTextMessages.AppendText(receive + "\n");
                     }));
@@ -50,76 +50,122 @@ namespace ChatApp
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message.ToString());
+                    MessageBox.Show(ex.Message);
                 }
             }
         }
 
         private void backgroundWorker2_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
-            if (client.Connected)
+            if (client != null && client.Connected)
             {
                 STW.WriteLine(TextToSend);
-                this.listTextMessages.Invoke(new MethodInvoker(delegate ()
+                this.Invoke(new MethodInvoker(delegate ()
                 {
                     listTextMessages.AppendText(TextToSend + "\n");
-
                 }));
             }
             else
             {
                 MessageBox.Show("Send failed!");
+                return;
             }
             backgroundWorker2.CancelAsync();
         }
+
         void StartServer()
         {
-            TcpListener listener = new TcpListener(IPAddress.Any, int.Parse(yPort.Text));
+            cancellationTokenSource = new CancellationTokenSource();
+            listener = new TcpListener(IPAddress.Any, int.Parse(yPort.Text));
             listener.Start();
+
             Task.Run(() =>
             {
                 try
                 {
-                    client = listener.AcceptTcpClient();
-                    STR = new StreamReader(client.GetStream());
-                    STW = new StreamWriter(client.GetStream());
-                    STW.AutoFlush = true;
-                    backgroundWorker1.RunWorkerAsync();
-                    backgroundWorker2.WorkerSupportsCancellation = true;
-                    this.Invoke(new MethodInvoker(delegate ()
+                    while (!cancellationTokenSource.Token.IsCancellationRequested)
                     {
-                        listTextMessages.AppendText("Client connected\n");
-                    }));
+                        client = listener.AcceptTcpClient();
+                        STR = new StreamReader(client.GetStream());
+                        STW = new StreamWriter(client.GetStream());
+                        STW.AutoFlush = true;
+                        backgroundWorker1.RunWorkerAsync();
+                        backgroundWorker2.WorkerSupportsCancellation = true;
+                        this.Invoke(new MethodInvoker(delegate ()
+                        {
+                            listTextMessages.AppendText("Client connected\n");
+                        }));
+                    }
                 }
-
+                catch (SocketException ex)
+                {
+                    if (ex.SocketErrorCode != SocketError.Interrupted)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message.ToString());
+                    MessageBox.Show(ex.Message);
                 }
-            });
+            }, cancellationTokenSource.Token);
+
             Trace.WriteLine("Server started with port " + User.PrivatePort);
+            listTextMessages.AppendText("Server started with port " + User.PrivatePort + "\n");
+            btnStart.Text = "Stop";
+        }
+
+        void StopServer()
+        {
+            try
+            {
+                cancellationTokenSource.Cancel();
+
+                if (listener != null)
+                {
+                    listener.Stop();
+                    listener = null;
+                }
+
+                if (client != null && client.Connected)
+                {
+                    STR.Close();
+                    STW.Close();
+                    client.Close();
+                }
+
+                listTextMessages.Invoke(new MethodInvoker(delegate ()
+                {
+                    listTextMessages.AppendText("Server stopped\n");
+                    listTextMessages.Clear();
+                }));
+
+                btnStart.Text = "Start";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
         {
-            if (isConnected == false)
+            if (client == null || !client.Connected)
             {
                 ConnectClient();
             }
             else
             {
-                btnConnect.Text = "Disconnect";
                 Disconnect();
             }
         }
 
         void ConnectClient()
         {
-            client = new TcpClient();
-            IPEndPoint IP_End = new IPEndPoint(IPAddress.Parse("127.0.0.1"), int.Parse(clPort.Text));
-
             try
             {
+                client = new TcpClient();
+                IPEndPoint IP_End = new IPEndPoint(IPAddress.Parse("127.0.0.1"), int.Parse(clPort.Text));
                 client.Connect(IP_End);
                 TextToSend = User.UserName + " joined the chat";
                 backgroundWorker2.RunWorkerAsync();
@@ -128,26 +174,45 @@ namespace ChatApp
                 STW.AutoFlush = true;
                 backgroundWorker1.RunWorkerAsync();
                 backgroundWorker2.WorkerSupportsCancellation = true;
+
+                listTextMessages.AppendText("Connected to server\n");
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message.ToString());
+                MessageBox.Show(ex.Message);
             }
-            listTextMessages.AppendText("Connected to server\n");
-
         }
+
         void Disconnect()
         {
-            TextToSend = User.UserName + " left the chat";
-            backgroundWorker2.RunWorkerAsync();
-            client.Close();
-            STR.Close();
-            STW.Close();
-            listTextMessages.Clear();
+            try
+            {
+                if (client != null)
+                {
+                    client.Close();
+                }
+
+                if (STR != null)
+                {
+                    STR.Close();
+                }
+
+                if (STW != null)
+                {
+                    STW.Close();
+                }
+
+                listTextMessages.Clear();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void PrivateChat_FormClosed(object sender, FormClosedEventArgs e)
         {
+            StopServer();
             Disconnect();
             SelectChatRoom selectChatRoom = new SelectChatRoom();
             selectChatRoom.Show();
@@ -155,7 +220,14 @@ namespace ChatApp
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            StartServer();
+            if (btnStart.Text == "Stop")
+            {
+                StopServer();
+            }
+            else
+            {
+                StartServer();
+            }
         }
     }
 }
