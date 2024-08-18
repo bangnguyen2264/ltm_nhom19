@@ -7,6 +7,8 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Windows.Forms;
 using System;
+using System.Drawing;
+using System.Collections.Generic;
 
 
 namespace ChatApp
@@ -16,6 +18,7 @@ namespace ChatApp
         IPEndPoint ip;
         Socket client;
         Thread listen;
+        Dictionary<int, string> fileMessages = new Dictionary<int, string>();
 
         public GroupChat()
         {
@@ -126,9 +129,27 @@ namespace ChatApp
         }
 
         // thêm tin nhắn vào listview
-        void AddMessage(string message)
+        void AddMessage(string message, string filePath = null)
         {
-            listTextMessages.Text += message + "\n";
+            if (filePath != null)
+            {
+                int start =     listTextMessages.TextLength;
+                listTextMessages.AppendText(message + "\n");
+                int end = listTextMessages.TextLength;
+
+                // Store the file path associated with the message
+                fileMessages.Add(start, filePath);
+
+                // Highlight the file message (optional)
+                listTextMessages.Select(start, end - start);
+                listTextMessages.SelectionColor = Color.Blue;
+                listTextMessages.SelectionFont = new Font(listTextMessages.Font, FontStyle.Underline);
+            }
+            else
+            {
+                listTextMessages.AppendText(message + "\n");
+            }
+
             txtMessage.Clear();
         }
 
@@ -166,6 +187,49 @@ namespace ChatApp
         {
             CloseConnection();
         }
+
+        private void btnFile_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string filePath = openFileDialog.FileName;
+                SendFile(filePath);
+                AddMessage(User.UserName +" "+ Path.GetFileName(filePath), filePath: filePath);
+            }
+        }
+        void SendFile(String filePath)
+        {
+            byte[] fileData = File.ReadAllBytes(filePath);
+            string fileName = Path.GetFileName(filePath);
+            client.Send(Serialize(User.UserName + fileName));
+            client.Send(fileData);
+        }
+
+        private void listTextMessages_MouseDown(object sender, MouseEventArgs e)
+        {
+            int index = listTextMessages.GetCharIndexFromPosition(e.Location);
+
+            foreach (var kvp in fileMessages)
+            {
+                if (index >= kvp.Key && index < kvp.Key + kvp.Value.Length)
+                {
+                    SaveFileDialog saveFileDialog = new SaveFileDialog
+                    {
+                        FileName = Path.GetFileName(kvp.Value),
+                        Filter = "All Files (*.*)|*.*"
+                    };
+
+                    if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        File.Copy(kvp.Value, saveFileDialog.FileName, true);
+                        MessageBox.Show("Tải xuống thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    break;
+                }
+            }
+        }
     }
+
 }
 

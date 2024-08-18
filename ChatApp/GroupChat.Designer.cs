@@ -31,6 +31,7 @@
             this.txtMessage = new System.Windows.Forms.TextBox();
             this.btnSend = new System.Windows.Forms.Button();
             this.listTextMessages = new System.Windows.Forms.RichTextBox();
+            this.btnFile = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtMessage
@@ -38,7 +39,7 @@
             this.txtMessage.Location = new System.Drawing.Point(12, 390);
             this.txtMessage.Multiline = true;
             this.txtMessage.Name = "txtMessage";
-            this.txtMessage.Size = new System.Drawing.Size(368, 51);
+            this.txtMessage.Size = new System.Drawing.Size(288, 51);
             this.txtMessage.TabIndex = 1;
             // 
             // btnSend
@@ -58,12 +59,24 @@
             this.listTextMessages.Size = new System.Drawing.Size(449, 372);
             this.listTextMessages.TabIndex = 3;
             this.listTextMessages.Text = "";
+            this.listTextMessages.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listTextMessages_MouseDown);
+            // 
+            // btnFile
+            // 
+            this.btnFile.Location = new System.Drawing.Point(306, 390);
+            this.btnFile.Name = "btnFile";
+            this.btnFile.Size = new System.Drawing.Size(75, 51);
+            this.btnFile.TabIndex = 4;
+            this.btnFile.Text = "File";
+            this.btnFile.UseVisualStyleBackColor = true;
+            this.btnFile.Click += new System.EventHandler(this.btnFile_Click);
             // 
             // GroupChat
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(482, 453);
+            this.Controls.Add(this.btnFile);
             this.Controls.Add(this.listTextMessages);
             this.Controls.Add(this.btnSend);
             this.Controls.Add(this.txtMessage);
@@ -79,5 +92,6 @@
         private System.Windows.Forms.TextBox txtMessage;
         private System.Windows.Forms.Button btnSend;
         private System.Windows.Forms.RichTextBox listTextMessages;
+        private System.Windows.Forms.Button btnFile;
     }
 }

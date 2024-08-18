@@ -129,10 +129,11 @@ namespace ChatApp
 
                 if (client != null && client.Connected)
                 {
-                    STR.Close();
-                    STW.Close();
-                    client.Close();
+                    TextToSend = "Server stopped";
+                    backgroundWorker2.RunWorkerAsync();
+                    Disconnect();
                 }
+               
 
                 listTextMessages.Invoke(new MethodInvoker(delegate ()
                 {
@@ -181,6 +182,7 @@ namespace ChatApp
             {
                 MessageBox.Show(ex.Message);
             }
+            btnConnect.Text = "Disconnect";
         }
 
         void Disconnect()
@@ -208,12 +210,21 @@ namespace ChatApp
             {
                 MessageBox.Show(ex.Message);
             }
+            TextToSend = User.UserName + " left the chat";
+            backgroundWorker2.RunWorkerAsync();
+            btnConnect.Text = "Connect";
         }
 
         private void PrivateChat_FormClosed(object sender, FormClosedEventArgs e)
         {
-            StopServer();
-            Disconnect();
+            if(client != null && client.Connected)
+            {
+                Disconnect();
+            }
+            if (listener != null)
+            {
+                StopServer();
+            }
             SelectChatRoom selectChatRoom = new SelectChatRoom();
             selectChatRoom.Show();
         }
@@ -222,6 +233,7 @@ namespace ChatApp
         {
             if (btnStart.Text == "Stop")
             {
+
                 StopServer();
             }
             else
