@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace ChatApp
 {
@@ -20,6 +21,7 @@ namespace ChatApp
         public string TextToSend;
         private OpenFileDialog openFileDialog;
         Dictionary<int, string> fileMessages = new Dictionary<int, string>(); // Track file messages
+
 
         public PrivateChat()
         {
@@ -46,7 +48,6 @@ namespace ChatApp
             }
             return text;
         }
-
         //Xử lý dữ liệu nhận được
         private void backgroundWorker1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
@@ -62,10 +63,16 @@ namespace ChatApp
                     if (dataType == "message")
                     {
                         string message = reader.ReadString();
-                        this.listTextMessages.Invoke(new MethodInvoker(delegate ()
+                        if (message == "Server stopped")
+                        {
+                            Disconnect();
+                        }
+
+                            this.listTextMessages.Invoke(new MethodInvoker(delegate ()
                         {
                             listTextMessages.AppendText(message + "\n");
                         }));
+
                     }
                     else if (dataType == "file")
                     {
@@ -73,11 +80,11 @@ namespace ChatApp
                         int fileLength = reader.ReadInt32();
                         byte[] fileBytes = reader.ReadBytes(fileLength);
 
-                        // Save the file with the correct name and extension
-                        string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), fileName);
-                        File.WriteAllBytes(filePath, fileBytes);
+                        // Create a path in a temporary directory for saving received files
+                        string tempPath = Path.Combine(Path.GetTempPath(), fileName);
+                        File.WriteAllBytes(tempPath, fileBytes);
 
-                        string message = $"{User.UserName} sent file: {fileName}";
+                        string message = User.UserName + " sent file: " + fileName;
                         this.listTextMessages.Invoke(new MethodInvoker(delegate ()
                         {
                             int start = listTextMessages.TextLength;
@@ -85,10 +92,10 @@ namespace ChatApp
                             int end = listTextMessages.TextLength;
 
                             // Store the file path associated with the message
-                            fileMessages.Add(start, filePath);
+                            fileMessages.Add(start, tempPath);
 
                             // Highlight the file message (optional)
-                            listTextMessages.Select(start, end - start);
+                            listTextMessages.Select(start, end - start-1);
                             listTextMessages.SelectionColor = Color.Blue;
                             listTextMessages.SelectionFont = new Font(listTextMessages.Font, FontStyle.Underline);
                         }));
@@ -108,6 +115,7 @@ namespace ChatApp
             SendMessage(TextToSend);
         }
 
+
         private void SendMessage(string message)
         {
             if (client != null && client.Connected)
@@ -117,13 +125,45 @@ namespace ChatApp
                     NetworkStream networkStream = client.GetStream();
                     BinaryWriter writer = new BinaryWriter(networkStream);
 
-                    writer.Write("message");
-                    writer.Write(message);
-
-                    this.listTextMessages.Invoke(new MethodInvoker(delegate ()
+                    if (message.Contains("sent file:"))
                     {
-                        listTextMessages.AppendText(message + "\n");
-                    }));
+                        // Extract file name from the message
+                        string fileName = Path.GetFileName(message.Split(new[] { "sent file: " }, StringSplitOptions.None)[1]);
+                        string filePath = Path.Combine(Path.GetTempPath(), fileName);
+                        byte[] fileBytes = File.ReadAllBytes(filePath);
+                        writer.Write("file");
+                        writer.Write(fileName); // Send file name with extension
+                        writer.Write(fileBytes.Length);
+                        writer.Write(fileBytes);
+                        this.listTextMessages.Invoke(new MethodInvoker(delegate ()
+                        {
+                            int start = listTextMessages.TextLength;
+                            listTextMessages.AppendText(message + "\n");
+                            int end = listTextMessages.TextLength;
+
+                            // Store the file path associated with the message
+                            fileMessages.Add(start, filePath);
+
+                            // Highlight the file message (optional)
+                            listTextMessages.Select(start, end - start);
+                            listTextMessages.SelectionColor = Color.Blue;
+                            listTextMessages.SelectionFont = new Font(listTextMessages.Font, FontStyle.Underline);
+                        }));
+                    }
+                
+                    else
+                    {
+                        writer.Write("message");
+                        writer.Write(message);
+                        if(message.Contains(" left the chat"))
+                        {
+                            StopServer();
+                        }    
+                        this.listTextMessages.Invoke(new MethodInvoker(delegate ()
+                        {
+                            listTextMessages.AppendText(message + "\n");
+                        }));
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -133,62 +173,6 @@ namespace ChatApp
             else
             {
                 MessageBox.Show("Send failed!");
-            }
-        }
-
-        private void SendFile(string filePath)
-        {
-            if (client != null && client.Connected)
-            {
-                try
-                {
-                    byte[] fileBytes = File.ReadAllBytes(filePath);
-                    string fileName = Path.GetFileName(filePath); // Get the file name with extension
-                    NetworkStream networkStream = client.GetStream();
-                    BinaryWriter writer = new BinaryWriter(networkStream);
-
-                    // Send file info
-                    writer.Write("file");
-                    writer.Write(fileName); // Send file name with extension
-                    writer.Write(fileBytes.Length);
-                    writer.Write(fileBytes);
-
-                    // Send a message about the file
-                    TextToSend = $"{User.UserName} sent file: {fileName}";
-                    SendMessage(TextToSend);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error sending file: " + ex.Message);
-                }
-            }
-            else
-            {
-                MessageBox.Show("Cannot send file. Connection is closed.");
-            }
-        }
-
-        private void listTextMessages_MouseDown(object sender, MouseEventArgs e)
-        {
-            int index = listTextMessages.GetCharIndexFromPosition(e.Location);
-
-            foreach (var kvp in fileMessages)
-            {
-                if (index >= kvp.Key && index < kvp.Key + kvp.Value.Length)
-                {
-                    SaveFileDialog saveFileDialog = new SaveFileDialog
-                    {
-                        FileName = Path.GetFileName(kvp.Value),
-                        Filter = "All Files (*.*)|*.*"
-                    };
-
-                    if (saveFileDialog.ShowDialog() == DialogResult.OK)
-                    {
-                        File.Copy(kvp.Value, saveFileDialog.FileName, true);
-                        MessageBox.Show("File downloaded successfully!", "Download Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                    break;
-                }
             }
         }
 
@@ -252,13 +236,14 @@ namespace ChatApp
                 STW.AutoFlush = true;
                 backgroundWorker1.RunWorkerAsync();
                 backgroundWorker2.WorkerSupportsCancellation = true;
+                listTextMessages.AppendText("Connected to server\n");
+                btnConnect.Text = "Disconnect";
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message.ToString());
             }
-            listTextMessages.AppendText("Connected to server\n");
-            btnConnect.Text = "Disconnect";
+
         }
 
         void Disconnect()
@@ -271,26 +256,24 @@ namespace ChatApp
             listTextMessages.Clear();
             btnConnect.Text = "Connect";
         }
-
         void StopServer()
         {
-            listener.Stop();
             if (client != null)
             {
-                TextToSend = User.UserName + " left the chat";
+                TextToSend = "Server stopped";
                 SendMessage(TextToSend);
-                client.Close();
             }
+            listener.Stop();
             if (STR != null)
             {
                 STR.Close();
-            }
-            if (STW != null)
+            }if (STW != null)
             {
                 STW.Close();
             }
             listTextMessages.Clear();
             btnStart.Text = "Start";
+
         }
 
         private void PrivateChat_FormClosed(object sender, FormClosedEventArgs e)
@@ -302,13 +285,13 @@ namespace ChatApp
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            if (btnStart.Text == "Stop")
+            if(btnStart.Text == "Stop")
             {
                 StopServer();
             }
             else
             {
-                StartServer();
+               StartServer();
             }
         }
 
@@ -318,6 +301,61 @@ namespace ChatApp
             {
                 string filePath = openFileDialog.FileName;
                 SendFile(filePath);
+            }
+        }
+
+        private void SendFile(string filePath)
+        {
+            if (client != null && client.Connected)
+            {
+                try
+                {
+                    byte[] fileBytes = File.ReadAllBytes(filePath);
+                    string fileName = Path.GetFileName(filePath); // Get the file name with extension
+                    NetworkStream networkStream = client.GetStream();
+                    BinaryWriter writer = new BinaryWriter(networkStream);
+
+                    // Send file info
+                    writer.Write("file");
+                    writer.Write(fileName); // Send file name with extension
+                    writer.Write(fileBytes.Length);
+                    writer.Write(fileBytes);
+
+                    TextToSend = User.UserName + " sent file: " + fileName;
+                    SendMessage(TextToSend);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error sending file: " + ex.Message);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Cannot send file. Connection is closed.");
+            }
+        }
+
+        private void listTextMessages_MouseDown(object sender, MouseEventArgs e)
+        {
+            int index = listTextMessages.GetCharIndexFromPosition(e.Location);
+
+            foreach (var kvp in fileMessages)
+            {
+                if (index >= kvp.Key && index < kvp.Key + kvp.Value.Length)
+                {
+                    SaveFileDialog saveFileDialog = new SaveFileDialog
+                    {
+                        FileName = Path.GetFileName(kvp.Value),
+                        Filter = "All Files (*.*)|*.*"
+                    };
+
+                    if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        File.Copy(kvp.Value, saveFileDialog.FileName, true);
+                        MessageBox.Show("File downloaded successfully!", "Download Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    break;
+                }
             }
         }
     }
