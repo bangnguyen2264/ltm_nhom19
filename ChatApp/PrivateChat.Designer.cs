@@ -39,6 +39,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btnConnect = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
+            this.btnSendFile = new System.Windows.Forms.Button();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.SuspendLayout();
             // 
             // listTextMessages
@@ -48,12 +50,13 @@
             this.listTextMessages.Size = new System.Drawing.Size(453, 338);
             this.listTextMessages.TabIndex = 6;
             this.listTextMessages.Text = "";
+            this.listTextMessages.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listTextMessages_MouseDown);
             // 
             // btnSend
             // 
-            this.btnSend.Location = new System.Drawing.Point(383, 390);
+            this.btnSend.Location = new System.Drawing.Point(383, 418);
             this.btnSend.Name = "btnSend";
-            this.btnSend.Size = new System.Drawing.Size(87, 51);
+            this.btnSend.Size = new System.Drawing.Size(88, 24);
             this.btnSend.TabIndex = 5;
             this.btnSend.Text = "Send";
             this.btnSend.UseVisualStyleBackColor = true;
@@ -127,11 +130,27 @@
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
+            // btnSendFile
+            // 
+            this.btnSendFile.Location = new System.Drawing.Point(383, 390);
+            this.btnSendFile.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnSendFile.Name = "btnSendFile";
+            this.btnSendFile.Size = new System.Drawing.Size(87, 27);
+            this.btnSendFile.TabIndex = 13;
+            this.btnSendFile.Text = "Send file";
+            this.btnSendFile.UseVisualStyleBackColor = true;
+            this.btnSendFile.Click += new System.EventHandler(this.btnSendFile_Click);
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
             // PrivateChat
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(482, 453);
+            this.Controls.Add(this.btnSendFile);
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.btnConnect);
             this.Controls.Add(this.clPort);
@@ -162,5 +181,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnConnect;
         private System.Windows.Forms.Button btnStart;
+        private System.Windows.Forms.Button btnSendFile;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
     }
 }
