@@ -84,7 +84,7 @@ namespace ChatApp
                         string tempPath = Path.Combine(Path.GetTempPath(), fileName);
                         File.WriteAllBytes(tempPath, fileBytes);
 
-                        string message = User.UserName + " sent file: " + fileName;
+                        string message = "Received file: "+ fileName;
                         this.listTextMessages.Invoke(new MethodInvoker(delegate ()
                         {
                             int start = listTextMessages.TextLength;
@@ -130,20 +130,18 @@ namespace ChatApp
                         // Extract file name from the message
                         string fileName = Path.GetFileName(message.Split(new[] { "sent file: " }, StringSplitOptions.None)[1]);
                         string filePath = Path.Combine(Path.GetTempPath(), fileName);
-                        byte[] fileBytes = File.ReadAllBytes(filePath);
-                        writer.Write("file");
+/*                        byte[] fileBytes = File.ReadAllBytes(filePath);*/
+/*                        writer.Write("file");
                         writer.Write(fileName); // Send file name with extension
                         writer.Write(fileBytes.Length);
-                        writer.Write(fileBytes);
+                        writer.Write(fileBytes);*/
                         this.listTextMessages.Invoke(new MethodInvoker(delegate ()
                         {
                             int start = listTextMessages.TextLength;
                             listTextMessages.AppendText(message + "\n");
                             int end = listTextMessages.TextLength;
-
                             // Store the file path associated with the message
                             fileMessages.Add(start, filePath);
-
                             // Highlight the file message (optional)
                             listTextMessages.Select(start, end - start);
                             listTextMessages.SelectionColor = Color.Blue;

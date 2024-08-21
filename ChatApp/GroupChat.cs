@@ -111,7 +111,18 @@ namespace ChatApp
                     if (bytesReceived > 0)
                     {
                         string message = (string)Deserialize(data.Take(bytesReceived).ToArray());
-                        AddMessage(message);
+                        if(message.Contains("send file: "))
+                        {
+                            string fileName = message.Split(':')[1].Trim();
+                            string filePath = Path.Combine(Application.StartupPath, fileName);
+                            File.WriteAllBytes(filePath, data.Skip(message.Length).ToArray());
+                            AddMessage(message, filePath);
+                        }
+                        else
+                        {
+                            // thêm tin nhắn vào listview
+                            AddMessage(message);
+                        }
                     }
                 }
             }
@@ -202,7 +213,7 @@ namespace ChatApp
         {
             byte[] fileData = File.ReadAllBytes(filePath);
             string fileName = Path.GetFileName(filePath);
-            client.Send(Serialize(User.UserName + fileName));
+            client.Send(Serialize(User.UserName+" send file: " + fileName));
             client.Send(fileData);
         }
 
